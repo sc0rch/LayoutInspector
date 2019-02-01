@@ -44,6 +44,10 @@ public extension LayoutInspector {
     @objc func showLayout() {
         startLayoutInspection()
     }
+
+    @objc func forceLayout() {
+        forceLayoutInspection()
+    }
     
     /**
      Specifies automatical trigger to start layout inspection
@@ -72,6 +76,13 @@ private extension LayoutInspector {
         presenter?.showInspectorView(for: viewDescriptionTree)
         isInspecting = true
         #endif
+    }
+
+    @objc func forceLayoutInspection() {
+        guard let viewDescriptionTree = hierarchyBuilder.captureHierarchy(), isInspecting == false else { return }
+        presenter = makeLayoutInspectorPresenter()
+        presenter?.showInspectorView(for: viewDescriptionTree)
+        isInspecting = true
     }
     
     func subscribeForTrigger(_ trigger: AutoTrigger) {
